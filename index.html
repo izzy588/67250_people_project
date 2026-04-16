@@ -6,23 +6,51 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #ffffff;
+      background: #f0f4f8;
       margin: 0;
-      padding: 40px 0;
-      display: flex;
-      justify-content: center;
+      padding: 0;
     }
 
+    /* Floating bubble */
+    #chat-bubble {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 65px;
+      height: 65px;
+      background: #0078d4;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 32px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+      z-index: 9999;
+    }
+
+    /* Chat window */
     #chat-container {
+      position: fixed;
+      bottom: 100px;
+      right: 25px;
       width: 360px;
       height: 560px;
       background: white;
       border-radius: 14px;
-      box-shadow: 0 4px 25px rgba(0,0,0,0.12);
-      display: flex;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.2);
+      display: none;
       flex-direction: column;
       overflow: hidden;
       border: 2px solid #0078d4;
+      animation: slideUp 0.3s ease-out;
+      z-index: 9999;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     #header {
@@ -66,9 +94,12 @@
 </head>
 <body>
 
+<!-- Floating bubble -->
+<div id="chat-bubble">💬</div>
+
+<!-- Chat window -->
 <div id="chat-container">
   <div id="header">MedConnect Assistant</div>
-
   <div id="messages"></div>
 
   <div id="input-area">
@@ -78,22 +109,95 @@
 </div>
 
 <script>
+  // Toggle chat window
+  document.getElementById("chat-bubble").onclick = function () {
+    const chat = document.getElementById("chat-container");
+    const messages = document.getElementById("messages");
+
+    const opening = !chat.style.display || chat.style.display === "none";
+    chat.style.display = opening ? "flex" : "none";
+
+    if (opening && messages.childElementCount === 0) {
+      const welcome = document.createElement("div");
+      welcome.textContent = "Bot: Hi! I’m the MedConnect assistant. Ask me about doctors, appointments, or referrals.";
+      messages.appendChild(welcome);
+    }
+  };
+
+  // Fake AI logic
+function getBotReply(text) {
+  text = text.toLowerCase();
+
+  // GENERAL DOCTORS
+  if (text.includes("doctor") || text.includes("provider") || text.includes("physician")) {
+    return "MedConnect works with a variety of doctors including primary care, specialists, and urgent care providers. What type of doctor are you looking for?";
+  }
+
+  // BOOKING / APPOINTMENTS
+  if (text.includes("appointment") || text.includes("schedule") || text.includes("book")) {
+    return "To book an appointment, visit the MedConnect scheduling page or contact your provider directly. I can also help you figure out which type of doctor you need.";
+  }
+
+  // INSURANCE
+  if (text.includes("insurance") || text.includes("coverage") || text.includes("copay")) {
+    return "MedConnect accepts most major insurance plans. For exact coverage, copays, or network questions, check your insurance portal or contact your provider’s office.";
+  }
+
+  // PRESCRIPTIONS
+  if (text.includes("prescription") || text.includes("refill") || text.includes("medication")) {
+    return "Prescription refills are usually handled through your provider’s office or patient portal. If it’s urgent, contact your pharmacy and they can request a refill from your doctor.";
+  }
+
+  // SPECIALTIES (existing)
+  if (text.includes("cardiologist") || text.includes("heart"))
+    return "Our cardiologist is Dr. James Carter. He specializes in cardiovascular care.";
+
+  if (text.includes("primary care") || text.includes("pcp"))
+    return "Dr. Maya Bridges is our primary care physician.";
+
+  if (text.includes("oncologist") || text.includes("cancer"))
+    return "Dr. Seamus Riley is our oncology specialist.";
+
+  if (text.includes("endocrinologist") || text.includes("diabetes") || text.includes("thyroid"))
+    return "Dr. Hannah Ross handles endocrine and metabolic conditions.";
+
+  if (text.includes("neurologist") || text.includes("brain"))
+    return "Dr. Kris Gemsworth is our neurologist.";
+
+  if (text.includes("psychiatrist") || text.includes("mental"))
+    return "Dr. Gregg Haus provides psychiatric care.";
+
+  // HELP
+  if (text.includes("help"))
+    return "I can answer questions about doctors, appointments, insurance, and prescriptions.";
+
+  // DEFAULT
+  return "I'm a demo MedConnect assistant. Try asking about doctors, appointments, insurance, or prescriptions.";
+}
+
+
   function sendMessage() {
     const input = document.getElementById("userInput");
     const messages = document.getElementById("messages");
+    const userText = input.value.trim();
 
-    if (!input.value.trim()) return;
+    if (!userText) return;
 
     const userMsg = document.createElement("div");
-    userMsg.textContent = "You: " + input.value;
+    userMsg.textContent = "You: " + userText;
     messages.appendChild(userMsg);
 
     const botMsg = document.createElement("div");
-    botMsg.textContent = "Bot: This is where your AI response will go.";
+    botMsg.textContent = "Bot: typing...";
     messages.appendChild(botMsg);
 
-    input.value = "";
     messages.scrollTop = messages.scrollHeight;
+    input.value = "";
+
+    setTimeout(() => {
+      botMsg.textContent = "Bot: " + getBotReply(userText);
+      messages.scrollTop = messages.scrollHeight;
+    }, 400);
   }
 </script>
 
