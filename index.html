@@ -109,20 +109,23 @@
 </div>
 
 <script>
-  // Toggle chat window
+  // Open chat on load
+  const chat = document.getElementById("chat-container");
+  const messages = document.getElementById("messages");
+  chat.style.display = "flex";
+  const welcome = document.createElement("div");
+  welcome.textContent = "Bot: Hi! I’m the MedConnect assistant. Ask me about doctors, appointments, or referrals.";
+  messages.appendChild(welcome);
+
+  // Toggle chat window on bubble click
   document.getElementById("chat-bubble").onclick = function () {
-    const chat = document.getElementById("chat-container");
-    const messages = document.getElementById("messages");
-
-    const opening = !chat.style.display || chat.style.display === "none";
-    chat.style.display = opening ? "flex" : "none";
-
-    if (opening && messages.childElementCount === 0) {
-      const welcome = document.createElement("div");
-      welcome.textContent = "Bot: Hi! I’m the MedConnect assistant. Ask me about doctors, appointments, or referrals.";
-      messages.appendChild(welcome);
-    }
+    chat.style.display = chat.style.display === "none" ? "flex" : "none";
   };
+
+  // Submit on Enter key
+  document.getElementById("userInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") sendMessage();
+  });
 
 function getBotReply(text) {
   text = text.toLowerCase();
