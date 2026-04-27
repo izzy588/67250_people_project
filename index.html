@@ -6,7 +6,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f0f4f8;
+      background: #FFFFFF;
       margin: 0;
       padding: 0;
     }
@@ -124,55 +124,96 @@
     }
   };
 
-  // Fake AI logic
 function getBotReply(text) {
   text = text.toLowerCase();
 
-  // GENERAL DOCTORS
-  if (text.includes("doctor") || text.includes("provider") || text.includes("physician")) {
-    return "MedConnect works with a variety of doctors including primary care, specialists, and urgent care providers. What type of doctor are you looking for?";
-  }
+  // GREETINGS
+  if (text.match(/^(hi|hello|hey|good morning|good afternoon|good evening|howdy)[\s!?.]*$/))
+    return "Hi there! I’m the MedConnect assistant. I can help with doctors, appointments, prescriptions, insurance, medical records, and more. What do you need?";
 
-  // BOOKING / APPOINTMENTS
-  if (text.includes("appointment") || text.includes("schedule") || text.includes("book")) {
-    return "To book an appointment, visit the MedConnect scheduling page or contact your provider directly. I can also help you figure out which type of doctor you need.";
-  }
+  // THANKS
+  if (text.includes("thank") || text.includes("thanks") || text.includes("appreciate"))
+    return "You’re welcome! Is there anything else I can help you with?";
+
+  // EMERGENCY
+  if (text.includes("emergency") || text.includes("911") || text.includes("chest pain") || text.includes("can’t breathe") || text.includes("stroke") || text.includes("unconscious") || text.includes("severe bleeding"))
+    return "If this is a medical emergency, call 911 immediately or go to your nearest emergency room. Do not wait for an appointment.";
+
+  // CONTACT
+  if (text.includes("contact") || text.includes("email") || text.includes("reach"))
+    return "You can reach MedConnect at medconnect@cmu.edu for any questions or support.";
+
+  // APPOINTMENTS / BOOKING
+  if (text.includes("appointment") || text.includes("schedule") || text.includes("book") || text.includes("visit"))
+    return "Appointments are booked through our Doctor Appointment Booking Form. You can also view your upcoming appointments on the MedConnect calendar. Contact medconnect@cmu.edu if you need help.";
+
+  // CANCEL / RESCHEDULE
+  if (text.includes("cancel") || text.includes("reschedule") || text.includes("change my appointment"))
+    return "To cancel or reschedule an appointment, please email medconnect@cmu.edu or use the booking form to request a new time.";
+
+  // REFERRALS
+  if (text.includes("referral") || text.includes("refer"))
+    return "MedConnect tracks referrals and insurance approvals in your dashboard. Your primary care physician Dr. Maya Bridges can submit a referral to a specialist on your behalf.";
 
   // INSURANCE
-  if (text.includes("insurance") || text.includes("coverage") || text.includes("copay")) {
-    return "MedConnect accepts most major insurance plans. For exact coverage, copays, or network questions, check your insurance portal or contact your provider’s office.";
-  }
+  if (text.includes("insurance") || text.includes("coverage") || text.includes("copay") || text.includes("deductible") || text.includes("claim") || text.includes("out-of-pocket"))
+    return "MedConnect’s insurance dashboard shows your plan details, copays, deductible usage, and recent claims. For example, a typical plan might have a $25 PCP copay, $50 specialist copay, and $75 urgent care copay. Check your dashboard for your specific plan info.";
 
-  // PRESCRIPTIONS
-  if (text.includes("prescription") || text.includes("refill") || text.includes("medication")) {
-    return "Prescription refills are usually handled through your provider’s office or patient portal. If it’s urgent, contact your pharmacy and they can request a refill from your doctor.";
-  }
+  // PRESCRIPTIONS / MEDICATIONS
+  if (text.includes("prescription") || text.includes("refill") || text.includes("medication") || text.includes("drug") || text.includes("pharmacy") || text.includes("medicine"))
+    return "Your MedConnect prescriptions page tracks all your active medications, refill counts, and last fill dates. If a refill is needed, contact your provider’s office or your pharmacy directly.";
 
-  // SPECIALTIES (existing)
-  if (text.includes("cardiologist") || text.includes("heart"))
-    return "Our cardiologist is Dr. James Carter. He specializes in cardiovascular care.";
+  // MEDICAL RECORDS
+  if (text.includes("record") || text.includes("medical history") || text.includes("chart") || text.includes("documents") || text.includes("transfer") || text.includes("imaging") || text.includes("test result") || text.includes("lab"))
+    return "MedConnect consolidates your medical records into one unified timeline — including test results, imaging, visit summaries, medication lists, and diagnoses. To transfer records, use the MedConnect Medical Record Transfer Authorization form. Email medconnect@cmu.edu for access.";
 
-  if (text.includes("primary care") || text.includes("pcp"))
-    return "Dr. Maya Bridges is our primary care physician.";
+  // SECURE MESSAGING
+  if (text.includes("message") || text.includes("chat") || text.includes("communicate") || text.includes("talk to my doctor") || text.includes("contact my doctor"))
+    return "MedConnect supports secure messaging with your care team. Messages are encrypted and meet healthcare privacy standards. Use the messaging feature in your dashboard to reach your provider.";
 
-  if (text.includes("oncologist") || text.includes("cancer"))
-    return "Dr. Seamus Riley is our oncology specialist.";
+  // GENERAL DOCTORS
+  if (text.includes("doctor") || text.includes("provider") || text.includes("physician"))
+    return "MedConnect works with primary care doctors and specialists. Our providers include Dr. Maya Bridges (Internal Medicine), Dr. James Carter (Cardiology), Dr. Hannah Ross (Endocrinology), Dr. Seamus Riley (Oncology), Dr. Gregg Haus (Neurology), Dr. Kris Gemsworth (Psychiatry), Dr. Anika Gray (Optometry), and Dr. Maria Quinn (Orthodontics). Who are you looking for?";
 
-  if (text.includes("endocrinologist") || text.includes("diabetes") || text.includes("thyroid"))
-    return "Dr. Hannah Ross handles endocrine and metabolic conditions.";
+  // SPECIALISTS
+  if (text.includes("cardiologist") || text.includes("heart") || text.includes("cardiovascular"))
+    return "Our cardiologist is Dr. James Carter. He specializes in cardiovascular care and heart health.";
 
-  if (text.includes("neurologist") || text.includes("brain"))
-    return "Dr. Kris Gemsworth is our neurologist.";
+  if (text.includes("primary care") || text.includes("pcp") || text.includes("internal medicine") || text.includes("family doctor") || text.includes("general"))
+    return "Dr. Maya Bridges is our Internal Medicine physician and primary care doctor with 12 years of experience. She handles general health, annual exams, chronic disease management, and referrals.";
 
-  if (text.includes("psychiatrist") || text.includes("mental"))
-    return "Dr. Gregg Haus provides psychiatric care.";
+  if (text.includes("oncologist") || text.includes("cancer") || text.includes("tumor") || text.includes("oncology"))
+    return "Dr. Seamus Riley is our oncology specialist, working with patients on cancer diagnosis and treatment planning.";
+
+  if (text.includes("endocrinologist") || text.includes("diabetes") || text.includes("thyroid") || text.includes("hormone") || text.includes("metabolic"))
+    return "Dr. Hannah Ross is our endocrinologist, handling conditions like diabetes, thyroid disorders, and hormonal imbalances.";
+
+  if (text.includes("neurologist") || text.includes("neurology") || text.includes("migraine") || text.includes("seizure") || text.includes("nerve"))
+    return "Dr. Gregg Haus is our neurologist. He treats conditions including migraines, epilepsy, and nerve disorders.";
+
+  if (text.includes("psychiatrist") || text.includes("psychiatry") || text.includes("mental health") || text.includes("anxiety") || text.includes("depression") || text.includes("therapy"))
+    return "Dr. Kris Gemsworth provides psychiatric care including evaluation and medication management for mental health conditions like anxiety and depression.";
+
+  if (text.includes("optometrist") || text.includes("eye") || text.includes("vision") || text.includes("glasses") || text.includes("contacts"))
+    return "Dr. Anika Gray is our optometrist, handling vision exams, prescriptions for glasses or contacts, and eye health.";
+
+  if (text.includes("orthodontist") || text.includes("orthodontics") || text.includes("braces") || text.includes("teeth") || text.includes("dental"))
+    return "Dr. Maria Quinn is our orthodontist, providing orthodontic care including braces and alignment treatments.";
+
+  // ABOUT MEDCONNECT
+  if (text.includes("what is medconnect") || text.includes("about medconnect") || text.includes("what do you do") || text.includes("how does this work"))
+    return "MedConnect is a patient-centered healthcare platform that centralizes your medical records, appointments, prescriptions, and insurance info in one place. It also enables secure communication with your care team and tracks referrals — so you never have to repeat yourself at every visit.";
+
+  // TEAM
+  if (text.includes("team") || text.includes("who built") || text.includes("who made") || text.includes("creators") || text.includes("founders"))
+    return "MedConnect was built by a CMU student team: Riyan Bilimoria Kadribegovic (Project Management & Design), Isha Swaminathan (Research & Content), and Isobel Bent (UX Design & Interactivity).";
 
   // HELP
-  if (text.includes("help"))
-    return "I can answer questions about doctors, appointments, insurance, and prescriptions.";
+  if (text.includes("help") || text.includes("what can you") || text.includes("what do you know"))
+    return "I can help with: doctors & specialists, appointments, prescriptions, insurance, medical records, secure messaging, referrals, and general MedConnect info. What do you need?";
 
   // DEFAULT
-  return "I'm a demo MedConnect assistant. Try asking about doctors, appointments, insurance, or prescriptions.";
+  return "I’m not sure about that. Try asking about doctors, appointments, prescriptions, insurance, or medical records — or type ‘help’ for a full list of topics.";
 }
 
 
